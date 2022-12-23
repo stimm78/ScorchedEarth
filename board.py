@@ -15,4 +15,13 @@ class Board:
         Prints current board state
     """
     def __init__(self):
-        pass
+        self.board = []
+        for i in range(8):
+            self.board.append([None] * 8)
+
+    def print_board(self):
+        for row in self.board:
+            for elem in row:
+                print(elem)
+            print()
+
