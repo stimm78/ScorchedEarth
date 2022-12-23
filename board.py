@@ -6,18 +6,22 @@ class Board:
 
     Attributes 
     ----------
+    board_size : integer
+        Represents size of the board
     board : 2D List
-        represents the game board
+        Represents the game board
 
     Methods
     -------
     print_board() -> None
         Prints current board state
     """
+    board_size = 8
+
     def __init__(self):
         self.board = []
-        for i in range(8):
-            self.board.append([None] * 8)
+        for i in range(Board.board_size):
+            self.board.append(['-'] * Board.board_size)
 
     def print_board(self):
         for row in self.board:

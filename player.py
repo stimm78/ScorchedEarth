@@ -1,4 +1,4 @@
-import board
+from board import Board
 import random
 
 invalid_letters = "Input must be a sequence of [WASD]"
@@ -52,7 +52,7 @@ class Player:
         return True
 
     def is_valid_position(self, board, other_player):
-        if self.position[0] < 0 or self.position[1] < 0 or self.position[0] > board.board_size-1 or self.position[1] > board.board_size - 1:
+        if self.position[0] < 0 or self.position[1] < 0 or self.position[0] > Board.board_size-1 or self.position[1] > Board.board_size - 1:
             return False
         elif self.position == other_player.position:
             return False 
