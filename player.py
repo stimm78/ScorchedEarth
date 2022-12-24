@@ -15,12 +15,21 @@ class Player:
 
     Methods:
     --------
-    is_valid_move(board:Board, move:string, other:Player) -> bool
-        Returns True if sequence is a valid move
+    get_position() -> list
+        Returns the position of the player
+
+    set_position(position:list) -> None
+        Sets the position of player to position
+
+    update_position(move: string) -> None
+        Updates the position of player according to input in [WASD]
+
     is_valid_position(other_player:Player): -> bool
-        Returns True if current Player's position is valid
+        Returns True if current Player's position is valid, False otherwise
+
     is_player_one() -> bool
-        Return True if player is p1
+        Return True if player is p1, False if player is p2
+
     get_dice_roll() -> int
         Return the result of a dice roll (1-6), which represents the number of moves (TODO)
     """
