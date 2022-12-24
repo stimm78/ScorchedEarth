@@ -17,12 +17,12 @@ class Board:
     update_board(coordinates:[x,y], value:string) -> None
         Update board with value at coordinates
     """
-    board_size = 8
+    BOARD_SIZE = 10
 
     def __init__(self):
-        self.board = [['-' for i in range(Board.board_size)] for j in range(Board.board_size)]
+        self.board = [['-' for i in range(Board.BOARD_SIZE)] for j in range(Board.BOARD_SIZE)]
         self.board[0][0] = 'A'
-        self.board[Board.board_size-1][Board.board_size-1] = 'B'
+        self.board[Board.BOARD_SIZE-1][Board.BOARD_SIZE-1] = 'B'
 
     def print_board(self):
         for row in self.board:
