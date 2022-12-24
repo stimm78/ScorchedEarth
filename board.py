@@ -1,5 +1,3 @@
-import player
-
 class Board:
     """
     A class to represent the game board.
@@ -22,9 +20,9 @@ class Board:
     board_size = 8
 
     def __init__(self):
-        self.board = []
-        for i in range(Board.board_size):
-            self.board.append(['-'] * Board.board_size)
+        self.board = [['-' for i in range(Board.board_size)] for j in range(Board.board_size)]
+        self.board[0][0] = 'A'
+        self.board[Board.board_size-1][Board.board_size-1] = 'B'
 
     def print_board(self):
         for row in self.board:
@@ -34,4 +32,7 @@ class Board:
 
     def update_board(self, coordinates, value):
         self.board[coordinates[0]][coordinates[1]] = value
+
+    def get_element(self, coordinates):
+        return self.board[coordinates[0]][coordinates[1]]
 

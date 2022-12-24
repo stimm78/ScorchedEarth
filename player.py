@@ -4,7 +4,7 @@ import random
 
 class Player:
     """
-    A class to represent a player in Scorched Earth
+    A class to represent a player. 
 
     Attributes:
     -----------
@@ -45,14 +45,15 @@ class Player:
         self.position = position
 
     def update_position(self, move):
+        current_position = self.get_position()
         if move == 'W':
-            self.position[1] += 1
+            current_position[1] += 1
         elif move == 'A':
-            self.position[0] -= 1
+            current_position[0] -= 1
         elif move == 'S':
-            self.position[1] -= 1
+            current_position[1] -= 1
         elif move == 'D':
-            self.position[0] += 1
+            current_position[0] += 1
 
     def is_valid_position(self, other_player):
         current_position = self.get_position()

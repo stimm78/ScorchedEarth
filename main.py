@@ -1,8 +1,5 @@
-import board
-import player
-import scorched_earth
+from scorched_earth import ScorchedEarth
 
 if __name__ == "__main__":
-    while True:
-        sequence = input("Enter your sequence of moves (WASD)")
-
+    game = ScorchedEarth() 
+    game.play()
