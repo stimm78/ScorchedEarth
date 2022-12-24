@@ -15,6 +15,9 @@ class Board:
     -------
     print_board() -> None
         Prints current board state
+
+    update_board(coordinates:[x,y], value:string) -> None
+        Update board with value at coordinates
     """
     board_size = 8
 
@@ -28,4 +31,7 @@ class Board:
             for elem in row:
                 print(elem)
             print()
+
+    def update_board(self, coordinates, value):
+        self.board[coordinates[0]][coordinates[1]] = value
 
