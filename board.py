@@ -27,7 +27,7 @@ class Board:
     def print_board(self):
         for row in self.board:
             for elem in row:
-                print(elem)
+                print(elem, end=" ")
             print()
 
     def update_board(self, coordinates, value):
