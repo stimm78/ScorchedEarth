@@ -8,9 +8,9 @@ Players start on opposite corners of the board, with Player 1 starting
 in the top left corner and Player 2 starting in the bottom right corner.
 
 Alternating each turn, players input a command to move their avatar along
-the grid. Every move leaves behind a "scorched" tile that neither player
-can touch. A player loses if they are captured by the other player or touch 
-a "scorched" tile on the grid.
+the grid. Every move leaves behind a "scorched" area that neither player
+can touch. A player loses if they are captured by the other player or is
+"checkmated" with no possible moves (surrounded by "scorched" areas)
 
 ## Usage
 

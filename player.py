@@ -10,7 +10,6 @@ class Player:
     -----------
     player_identity : bool
         True if player 1, False if player 2
-
     position : list[row,col]
         Represents position of the player
 

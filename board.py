@@ -6,7 +6,6 @@ class Board:
     ----------
     (class) board_size : integer
         Represents size of the board
-
     board : 2D List
         Represents the game board
 
