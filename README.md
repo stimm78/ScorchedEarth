@@ -1,4 +1,4 @@
-# ScorchedEarth
+# Scorched Earth
 
 An original abstract strategy game built in Python.
 
