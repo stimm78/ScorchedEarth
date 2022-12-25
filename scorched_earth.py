@@ -24,6 +24,9 @@ class ScorchedEarth():
     player2 : Player
         Initializes player 2
 
+    winner : Player
+        Represents winner of game
+
     Methods:
     --------
     move(direction:string, num_moves:int, current_player:Player) -> None
@@ -37,6 +40,12 @@ class ScorchedEarth():
 
     change_turn() -> None
         Update player turn
+
+    set_winner() -> None
+        Set winner of game
+
+    get_winner() -> Player
+        Return winner of game 
 
     game_over() -> bool
         Checks for win conditions and prints game_over messages
@@ -52,6 +61,7 @@ class ScorchedEarth():
         self.turn = True
         self.player1 = Player(True, [0,0])
         self.player2 = Player(False, [Board.BOARD_SIZE-1,Board.BOARD_SIZE-1])
+        self.winner = None
     
     def move(self, direction, num_moves, current_player):
         if self.is_valid_move(direction, num_moves, current_player):
@@ -59,7 +69,6 @@ class ScorchedEarth():
                 self.burn_squares(current_player.get_position())
                 current_player.update_position(direction)
                 if self.game_over():
-                    print("Game over.")
                     return
             if current_player == self.player1:
                 self.board.update_board(current_player.get_position(), 'A')
@@ -97,24 +106,30 @@ class ScorchedEarth():
     def change_turn(self):
         self.turn = not self.turn
 
+    def set_winner(self, player):
+        self.winner = player
+
+    def get_winner(self):
+        return self.winner
+
     def game_over(self):
         player1_position = self.player1.get_position()
         player2_position = self.player2.get_position()
         if self.turn:
             if self.board.get_element(player1_position) == '!':
-                print(p2_wins)
+                self.set_winner(self.player2)
                 return True
             elif player1_position == player2_position:
                 self.board.update_board(player2_position, 'A')
-                print(p1_wins) 
+                self.set_winner(self.player1)
                 return True
         else:
             if self.board.get_element(player2_position) == '!':
-                print(p1_wins)
+                self.set_winner(self.player1)
                 return True
             elif player1_position == player2_position:
                 self.board.update_board(player1_position, 'B')
-                print(p2_wins) 
+                self.set_winner(self.player2)
                 return True
         return False
 
@@ -128,7 +143,8 @@ class ScorchedEarth():
         return True
 
     def play(self):
-        self.board.print_board()
+        grid = self.board
+        grid.print_board()
         while True:
             print("Player 1 - Enter your move [1-2] [WASD]: ", end="")
             p1_input = input().split()
@@ -136,8 +152,13 @@ class ScorchedEarth():
                 print("Player 1 - Enter your move [1-2] [WASD]: ", end="")
                 p1_input = input().split()
             self.move(p1_input[1],int(p1_input[0]), self.player1)
-            self.board.print_board()
+            grid.print_board()
             if self.game_over():
+                if self.get_winner() == self.player1:
+                    print(p1_wins)
+                else:
+                    print(p2_wins)
+                print("Game over.")
                 return
             self.change_turn()
 
@@ -147,8 +168,13 @@ class ScorchedEarth():
                 print("Player 2 - Enter your move [1-2] [WASD]: ", end="")
                 p2_input = input().split()
             self.move(p2_input[1],int(p2_input[0]), self.player2)
-            self.board.print_board()
+            grid.print_board()
             if self.game_over():
+                if self.get_winner() == self.player1:
+                    print(p1_wins)
+                else:
+                    print(p2_wins)
+                print("Game over.")
                 return
             self.change_turn()
 
