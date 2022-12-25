@@ -55,12 +55,12 @@ class Player:
         elif direction == 'D':
             current_position[1] += 1
 
-    def is_valid_position(self):
-        current_position = self.get_position()
-        # Check for out of bounds
-        if current_position[0] < 0 or current_position[1] < 0 or current_position[0] > Board.BOARD_SIZE-1 or current_position[1] > Board.BOARD_SIZE - 1: 
-            return False
-        return True
+    # def is_valid_position(self):
+    #     current_position = self.get_position()
+    #     # Check for out of bounds
+    #     if current_position[0] < 0 or current_position[1] < 0 or current_position[0] > Board.BOARD_SIZE-1 or current_position[1] > Board.BOARD_SIZE - 1: 
+    #         return False
+    #     return True
 
     def is_player_one(self):
         return self.player_identity == True

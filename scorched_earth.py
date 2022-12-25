@@ -58,8 +58,8 @@ class ScorchedEarth():
     def __init__(self):
         self.board = Board()
         self.turn = True
-        self.player1 = Player(True, [0,0])
-        self.player2 = Player(False, [Board.BOARD_SIZE-1,Board.BOARD_SIZE-1])
+        self.player1 = Player(True, [1,1])
+        self.player2 = Player(False, [Board.BOARD_SIZE-2,Board.BOARD_SIZE-2])
         self.winner = None
     
     def move(self, direction, num_moves, current_player):
@@ -84,42 +84,19 @@ class ScorchedEarth():
             print(invalid_input)
             return False
         current_position = current_player.get_position()
-        if direction == 'W':
-            if not self.board.BOARD_SIZE > current_position[0] - num_moves >= 0:
-                print(invalid_sequence)
+        pos = current_position
+        for i in range(1,num_moves+1):
+            if direction == 'W':
+                pos = [current_position[0] - i, current_position[1]]
+            elif direction == 'A':
+                pos = [current_position[0], current_position[1] - i]
+            elif direction == 'S':
+                pos = [current_position[0] + i, current_position[1]]
+            elif direction == 'D':
+                pos = [current_position[0], current_position[1] + i]
+            if self.board.get_element(pos) == '!':
+                print(scorched_area)
                 return False
-            for i in range(1,num_moves+1):
-                position_1 = [current_position[0] - i, current_position[1]]
-                if self.board.get_element(position_1) == '!':
-                    print(scorched_area)
-                    return False
-        elif direction == 'A':
-            if not self.board.BOARD_SIZE > current_position[1] - num_moves >= 0:
-                print(invalid_sequence)
-                return False
-            for i in range(1,num_moves+1):
-                position_1 = [current_position[0], current_position[1] - i]
-                if self.board.get_element(position_1) == '!':
-                    print(scorched_area)
-                    return False
-        elif direction == 'S':
-            if not self.board.BOARD_SIZE > current_position[0] + num_moves >= 0:
-                print(invalid_sequence)
-                return False
-            for i in range(1,num_moves+1):
-                position_1 = [current_position[0] + i, current_position[1]]
-                if self.board.get_element(position_1) == '!':
-                    print(scorched_area)
-                    return False
-        elif direction == 'D':
-            if not self.board.BOARD_SIZE > current_position[1] + num_moves >= 0:
-                print(invalid_sequence)
-                return False
-            for i in range(1,num_moves+1):
-                position_1 = [current_position[0], current_position[1] + i]
-                if self.board.get_element(position_1) == '!':
-                    print(scorched_area)
-                    return False
         return True
 
     def burn_squares(self, position, symbol='!'):
