@@ -2,7 +2,7 @@ from board import Board
 from player import Player
 
 invalid_sequence = "Invalid sequence of moves"
-invalid_input= "Input string must be in the format [1-2] [WASD] with a space in between."
+invalid_input= "Input string must be in the format [1-2] [WASD] with a space in between. EX: 2 D"
 p1_wins = "Player 1 wins"
 p2_wins = "Player 2 wins"
 
