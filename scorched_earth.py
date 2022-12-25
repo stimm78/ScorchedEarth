@@ -64,15 +64,18 @@ class ScorchedEarth():
     
     def move(self, direction, num_moves, current_player):
         if self.is_valid_move(direction, num_moves, current_player):
+            flag = False
             for i in range(num_moves):
                 self.burn_squares(current_player.get_position())
                 current_player.update_position(direction)
                 if self.game_over():
-                    return
+                    flag = True
             if current_player == self.player1:
                 self.board.update_board(current_player.get_position(), 'A')
             else:
                 self.board.update_board(current_player.get_position(), 'B')
+            if flag:
+                return
         else:
             print(invalid_sequence)
 
@@ -81,46 +84,42 @@ class ScorchedEarth():
             print(invalid_input)
             return False
         current_position = current_player.get_position()
-        position_1 = current_position
-        position_2 = current_position
-        position_3 = current_position
-        position_4 = current_position
-        if self.board.BOARD_SIZE > current_position[0] - 1 >= 0:
-            position_1 = [current_position[0] - 1, current_position[1]]
-        if self.board.BOARD_SIZE > current_position[1] - 1 >= 0:
-            position_2 = [current_position[0], current_position[1] - 1]
-        if self.board.BOARD_SIZE > current_position[0] + 1 >= 0:
-            position_3 = [current_position[0] + 1, current_position[1]]
-        if self.board.BOARD_SIZE > current_position[1] + 1 >= 0:
-            position_4 = [current_position[0], current_position[1] + 1]
         if direction == 'W':
             if not self.board.BOARD_SIZE > current_position[0] - num_moves >= 0:
                 print(invalid_sequence)
                 return False
-            if self.board.get_element(position_1) == '!':
-                print(scorched_area)
-                return False
+            for i in range(1,num_moves+1):
+                position_1 = [current_position[0] - i, current_position[1]]
+                if self.board.get_element(position_1) == '!':
+                    print(scorched_area)
+                    return False
         elif direction == 'A':
             if not self.board.BOARD_SIZE > current_position[1] - num_moves >= 0:
                 print(invalid_sequence)
                 return False
-            if self.board.get_element(position_2) == '!':
-                print(scorched_area)
-                return False
+            for i in range(1,num_moves+1):
+                position_1 = [current_position[0], current_position[1] - i]
+                if self.board.get_element(position_1) == '!':
+                    print(scorched_area)
+                    return False
         elif direction == 'S':
             if not self.board.BOARD_SIZE > current_position[0] + num_moves >= 0:
                 print(invalid_sequence)
                 return False
-            if self.board.get_element(position_3) == '!':
-                print(scorched_area)
-                return False
+            for i in range(1,num_moves+1):
+                position_1 = [current_position[0] + i, current_position[1]]
+                if self.board.get_element(position_1) == '!':
+                    print(scorched_area)
+                    return False
         elif direction == 'D':
             if not self.board.BOARD_SIZE > current_position[1] + num_moves >= 0:
                 print(invalid_sequence)
                 return False
-            if self.board.get_element(position_4) == '!':
-                print(scorched_area)
-                return False
+            for i in range(1,num_moves+1):
+                position_1 = [current_position[0], current_position[1] + i]
+                if self.board.get_element(position_1) == '!':
+                    print(scorched_area)
+                    return False
         return True
 
     def burn_squares(self, position, symbol='!'):
@@ -157,16 +156,16 @@ class ScorchedEarth():
         player1_position = self.player1.get_position()
         player2_position = self.player2.get_position()
         if self.turn:
-            if self.checkmated(self.player1):
-                self.set_winner(self.player2)
+            if self.checkmated(self.player2):
+                self.set_winner(self.player1)
                 return True
             elif player1_position == player2_position:
                 self.board.update_board(player2_position, 'A')
                 self.set_winner(self.player1)
                 return True
         else:
-            if self.checkmated(self.player2):
-                self.set_winner(self.player1)
+            if self.checkmated(self.player1):
+                self.set_winner(self.player2)
                 return True
             elif player1_position == player2_position:
                 self.board.update_board(player1_position, 'B')
