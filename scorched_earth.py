@@ -46,13 +46,15 @@ class ScorchedEarth():
             for i in range(num_moves):
                 self.burn_squares(current_player.get_position())
                 current_player.update_position(direction)
+                if self.game_over():
+                    print("Game over.")
+                    return
             if current_player == self.player1:
                 self.board.update_board(current_player.get_position(), 'A')
             else:
                 self.board.update_board(current_player.get_position(), 'B')
         else:
             print(invalid_sequence)
-        self.change_turn()
 
     def is_valid_move(self, direction, num_moves, current_player):
         if direction not in ['W','A','S','D'] or num_moves not in [1,2]:
@@ -77,51 +79,52 @@ class ScorchedEarth():
     def game_over(self):
         player1_position = self.player1.get_position()
         player2_position = self.player2.get_position()
-
         if self.turn:
             if self.board.get_element(player1_position) == '!':
                 print(p2_wins)
                 return True
             elif player1_position == player2_position:
-                print(p1_wins)
+                print(p1_wins) 
                 return True
         else:
             if self.board.get_element(player2_position) == '!':
                 print(p1_wins)
                 return True
-            elif player2_position == player1_position:
-                print(p2_wins)
+            elif player1_position == player2_position:
+                print(p2_wins) 
                 return True
         return False
-    
-    def is_valid_input(self, input_string):
-        if len(input_string) != 2:
-            print("Input string must be in the format [1-2] [WASD] with a space in between.")
+
+    def is_valid_input(self, input_list):
+        if len(input_list) != 2:
+            print(invalid_input)
             return False
-        if not input_string[0].isdigit():
+        if not input_list[0].isdigit():
+            print(invalid_input)
             return False
         return True
 
     def play(self):
+        self.board.print_board()
         while True:
-            self.board.print_board()
             print("Player 1 - Enter your move [1-2] [WASD]: ", end="")
             p1_input = input().split()
             while not self.is_valid_input(p1_input) or not self.is_valid_move(p1_input[1],int(p1_input[0]),self.player1):
                 print("Player 1 - Enter your move [1-2] [WASD]: ", end="")
                 p1_input = input().split()
-            self.move(p1_input[1],int(p1_input[0]))
-            if self.game_over():
-                break
-
+            self.move(p1_input[1],int(p1_input[0]), self.player1)
             self.board.print_board()
+            if self.game_over():
+                return
+
             print("Player 2 - Enter your move [1-2] [WASD]: ", end="")
             p2_input = input().split()
             while not self.is_valid_input(p2_input) or not self.is_valid_move(p2_input[1],int(p2_input[0]),self.player2):
                 print("Player 2 - Enter your move [1-2] [WASD]: ", end="")
                 p2_input = input().split()
-            self.move(p2_input[1],int(p2_input[0]))
+            self.move(p2_input[1],int(p2_input[0]), self.player2)
+            self.board.print_board()
             if self.game_over():
-                break
+                return
 
 
