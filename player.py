@@ -10,6 +10,7 @@ class Player:
     -----------
     player_identity : bool
         True if player 1, False if player 2
+
     position : list[row,col]
         Represents position of the player
 
@@ -19,19 +20,19 @@ class Player:
         Returns the position of the player
 
     set_position(position:list) -> None
-        Sets the position of player to position
+        Sets the position of player to specified position
 
     update_position(move: string) -> None
         Updates the position of player according to input in [WASD]
 
-    is_valid_position(other_player:Player): -> bool
+    is_valid_position(): -> bool
         Returns True if current Player's position is valid, False otherwise
 
     is_player_one() -> bool
-        Return True if player is p1, False if player is p2
+        Return True if player is p1, False if player is p2 (Unused)
 
     get_dice_roll() -> int
-        Return the result of a dice roll (1-6), which represents the number of moves (TODO)
+        Return the result of a dice roll (1-6) (Unused)
     """
 
     def __init__(self, player_identity, position):

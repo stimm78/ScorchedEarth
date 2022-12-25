@@ -4,8 +4,9 @@ class Board:
 
     Attributes 
     ----------
-    board_size : integer
+    (class) board_size : integer
         Represents size of the board
+
     board : 2D List
         Represents the game board
 
@@ -14,10 +15,13 @@ class Board:
     print_board() -> None
         Prints current board state
 
-    update_board(coordinates:[x,y], value:string) -> None
+    update_board(coordinates:list, value:string) -> None
         Update board with value at coordinates
+
+    get_element(coordinates:list) -> string
+        Returns element at coordinate
     """
-    BOARD_SIZE = 10
+    BOARD_SIZE = 8
 
     def __init__(self):
         self.board = [['-' for i in range(Board.BOARD_SIZE)] for j in range(Board.BOARD_SIZE)]

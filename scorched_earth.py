@@ -13,27 +13,39 @@ class ScorchedEarth():
     Attributes:
     -----------
     board : Board
-        represents game board
+        Represents game board
+
     turn : bool
-        true if P1's turn, else P2's turn
+        True if P1's turn, else P2's turn
+
     player1 : Player
-        initializes player 1
+        Initializes player 1
+
     player2 : Player
-        initializes player 2
+        Initializes player 2
 
     Methods:
     --------
-    is_valid_move(board:Board, move:string, other:Player) -> bool
-        Returns True if move is a valid move
+    move(direction:string, num_moves:int, current_player:Player) -> None
+        Moves player's piece [num_moves] places in [direction]
 
-    move(direction:string, player:Player) -> None
-        Moves player's piece according to string [WASD] if possible
+    is_valid_move(direction:string, num_moves:int, current_player:Player) -> bool
+        Returns whether [current_player]'s move is valid
 
-    burn_squares(player:Player) -> None
+    burn_squares(position:list, symbol:string) -> None
         Marks nodes unvisitable
 
+    change_turn() -> None
+        Update player turn
+
+    game_over() -> bool
+        Checks for win conditions and prints game_over messages
+
+    is_valid_input() -> bool
+        Checks whether user input is valid
+
     play() -> None
-        Starts the game
+        Simulates a game
     """
     def __init__(self):
         self.board = Board()
@@ -62,13 +74,22 @@ class ScorchedEarth():
             return False
         current_position = current_player.get_position()
         if direction == 'W':
-            return self.board.BOARD_SIZE > current_position[0] - num_moves >= 0
+            if not self.board.BOARD_SIZE > current_position[0] - num_moves >= 0:
+                print(invalid_sequence)
+                return False
         elif direction == 'A':
-            return self.board.BOARD_SIZE > current_position[1] - num_moves >= 0
+            if not self.board.BOARD_SIZE > current_position[1] - num_moves >= 0:
+                print(invalid_sequence)
+                return False
         elif direction == 'S':
-            return self.board.BOARD_SIZE > current_position[0] + num_moves >= 0
+            if not self.board.BOARD_SIZE > current_position[0] + num_moves >= 0:
+                print(invalid_sequence)
+                return False
         elif direction == 'D':
-            return self.board.BOARD_SIZE > current_position[1] + num_moves >= 0
+            if not self.board.BOARD_SIZE > current_position[1] + num_moves >= 0:
+                print(invalid_sequence)
+                return False
+        return True
 
     def burn_squares(self, position, symbol='!'):
         self.board.update_board(position, symbol)
@@ -84,6 +105,7 @@ class ScorchedEarth():
                 print(p2_wins)
                 return True
             elif player1_position == player2_position:
+                self.board.update_board(player2_position, 'A')
                 print(p1_wins) 
                 return True
         else:
@@ -91,6 +113,7 @@ class ScorchedEarth():
                 print(p1_wins)
                 return True
             elif player1_position == player2_position:
+                self.board.update_board(player1_position, 'B')
                 print(p2_wins) 
                 return True
         return False
@@ -116,6 +139,7 @@ class ScorchedEarth():
             self.board.print_board()
             if self.game_over():
                 return
+            self.change_turn()
 
             print("Player 2 - Enter your move [1-2] [WASD]: ", end="")
             p2_input = input().split()
@@ -126,5 +150,5 @@ class ScorchedEarth():
             self.board.print_board()
             if self.game_over():
                 return
-
+            self.change_turn()
 
