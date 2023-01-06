@@ -1,11 +1,15 @@
 from board import Board
 from player import Player
 
-invalid_sequence = "Invalid sequence of moves"
-invalid_input= "Input string must be in the format [1-2] [WASD] with a space in between. EX: 2 D"
-scorched_area = "Unable to move there. Area is scorched."
-p1_wins = "Player 1 wins"
-p2_wins = "Player 2 wins"
+INVALID_MOVE= "Invalid move. Path is scorched."
+INVALID_INPUT= "Input string must be formatted [1-2] [WASD] to move (Ex: 2 D) or [R] to resign."
+
+PLAYER1_PROMPT = "Player A - Enter your move [1-2] [WASD] or (R)esign: "
+PLAYER2_PROMPT = "Player B - Enter your move [1-2] [WASD] or (R)esign: "
+
+PLAYER1_WINS = "Player A wins."
+PLAYER2_WINS = "Player B wins."
+GAME_OVER = "Game over."
 
 class ScorchedEarth():
     """
@@ -62,30 +66,21 @@ class ScorchedEarth():
         self.player2 = Player(False, [Board.BOARD_SIZE-2,Board.BOARD_SIZE-2])
         self.winner = None
     
-    def move(self, direction, num_moves, current_player):
-        if self.is_valid_move(direction, num_moves, current_player):
-            flag = False
-            for i in range(num_moves):
-                self.burn_squares(current_player.get_position())
-                current_player.update_position(direction)
-                if self.game_over():
-                    flag = True
-            if current_player == self.player1:
-                self.board.update_board(current_player.get_position(), 'A')
-            else:
-                self.board.update_board(current_player.get_position(), 'B')
-            if flag:
-                return
+    def move(self, num_moves, direction, current_player): # moves current_player num_moves in direction, and updates board
+        for _ in range(int(num_moves)):
+            self.burn_squares(current_player.get_position())
+            current_player.update_position(direction)
+            if self.captured():
+                break
+        if current_player == self.player1:
+            self.board.update_board(current_player.get_position(), 'A')
         else:
-            print(invalid_sequence)
+            self.board.update_board(current_player.get_position(), 'B')
 
-    def is_valid_move(self, direction, num_moves, current_player):
-        if direction not in ['W','A','S','D'] or num_moves not in [1,2]:
-            print(invalid_input)
-            return False
+    def is_valid_move(self, num_moves, direction, current_player): # checks for valid input, then check incrementally for valid move
         current_position = current_player.get_position()
         pos = current_position
-        for i in range(1,num_moves+1):
+        for i in range(1,int(num_moves)+1):
             if direction == 'W':
                 pos = [current_position[0] - i, current_position[1]]
             elif direction == 'A':
@@ -94,9 +89,23 @@ class ScorchedEarth():
                 pos = [current_position[0] + i, current_position[1]]
             elif direction == 'D':
                 pos = [current_position[0], current_position[1] + i]
-            if self.board.get_element(pos) == '!':
-                print(scorched_area)
+            if self.board.get_element(pos) == 'A' or self.board.get_element(pos) == 'B':
+                return True
+            elif self.board.get_element(pos) == '!':
+                print(INVALID_MOVE)
                 return False
+        return True
+
+    def is_valid_input(self, input_list):
+        if len(input_list) != 2:
+            print(INVALID_INPUT)
+            return False
+        if not input_list[0].isdigit():
+            print(INVALID_INPUT)
+            return False
+        if int(input_list[0]) not in [1,2] or input_list[1] not in ['W', 'A', 'S', 'D']:
+            print(INVALID_INPUT)
+            return False
         return True
 
     def burn_squares(self, position, symbol='!'):
@@ -111,87 +120,96 @@ class ScorchedEarth():
     def get_winner(self):
         return self.winner
 
-    def checkmated(self, current_player):
-        current_position = current_player.get_position()
-        position_1 = current_position
-        position_2 = current_position
-        position_3 = current_position
-        position_4 = current_position
-        if self.board.BOARD_SIZE > current_position[0] - 1 >= 0:
-            position_1 = [current_position[0] - 1, current_position[1]]
-        if self.board.BOARD_SIZE > current_position[1] - 1 >= 0:
-            position_2 = [current_position[0], current_position[1] - 1]
-        if self.board.BOARD_SIZE > current_position[0] + 1 >= 0:
-            position_3 = [current_position[0] + 1, current_position[1]]
-        if self.board.BOARD_SIZE > current_position[1] + 1 >= 0:
-            position_4 = [current_position[0], current_position[1] + 1]
-        if self.board.get_element(position_1) == '!' and self.board.get_element(position_2) == '!' and self.board.get_element(position_3) == '!' and self.board.get_element(position_4) == '!':
+    def checkmated(self): # Check for win by checkmate, and set winners
+        player1_position = self.player1.get_position()
+        player2_position = self.player2.get_position()
+        p1_position_1 = [player1_position[0] - 1, player1_position[1]]
+        p1_position_2 = [player1_position[0], player1_position[1] - 1]
+        p1_position_3 = [player1_position[0] + 1, player1_position[1]]
+        p1_position_4 = [player1_position[0], player1_position[1] + 1]
+        p2_position_1 = [player2_position[0] - 1, player2_position[1]]
+        p2_position_2 = [player2_position[0], player2_position[1] - 1]
+        p2_position_3 = [player2_position[0] + 1, player2_position[1]]
+        p2_position_4 = [player2_position[0], player2_position[1] + 1]
+        if self.board.get_element(p1_position_1) == '!' and self.board.get_element(p1_position_2) == '!' and self.board.get_element(p1_position_3) == '!' and self.board.get_element(p1_position_4) == '!':
+            self.set_winner(self.player2)
+            return True
+        if self.board.get_element(p2_position_1) == '!' and self.board.get_element(p2_position_2) == '!' and self.board.get_element(p2_position_3) == '!' and self.board.get_element(p2_position_4) == '!':
+            self.set_winner(self.player1)
             return True
         return False
 
-    def game_over(self):
+    def captured(self): # Check for win by capture and set winners
         player1_position = self.player1.get_position()
         player2_position = self.player2.get_position()
         if self.turn:
-            if self.checkmated(self.player2):
-                self.set_winner(self.player1)
-                return True
-            elif player1_position == player2_position:
-                self.board.update_board(player2_position, 'A')
+            if player1_position == player2_position:
                 self.set_winner(self.player1)
                 return True
         else:
-            if self.checkmated(self.player1):
-                self.set_winner(self.player2)
-                return True
-            elif player1_position == player2_position:
-                self.board.update_board(player1_position, 'B')
+            if player1_position == player2_position:
                 self.set_winner(self.player2)
                 return True
         return False
 
-    def is_valid_input(self, input_list):
-        if len(input_list) != 2:
-            print(invalid_input)
-            return False
-        if not input_list[0].isdigit():
-            print(invalid_input)
-            return False
-        return True
+    def game_over(self):
+        return self.checkmated() or self.captured()
+
+    def resign(self, input): # Checks for resign input, prints corresponding messages
+        if self.turn:
+            if input == ['R']:
+                self.set_winner(self.player2)
+                print(PLAYER2_WINS)
+                return True
+        else:
+            if input == ['R']:
+                self.set_winner(self.player1)
+                print(PLAYER1_WINS)
+                return True
+        return False
 
     def play(self):
         grid = self.board
         grid.print_board()
-        while True:
-            print("Player 1 - Enter your move [1-2] [WASD]: ", end="")
+        while not self.game_over():
+            # Player 1 Turn
+            print(PLAYER1_PROMPT, end="")
             p1_input = input().split()
-            while not self.is_valid_input(p1_input) or not self.is_valid_move(p1_input[1],int(p1_input[0]),self.player1):
-                print("Player 1 - Enter your move [1-2] [WASD]: ", end="")
+            if self.resign(p1_input):
+                return
+            while not self.is_valid_input(p1_input) or not self.is_valid_move(p1_input[0], p1_input[1], self.player1):
+                print(PLAYER1_PROMPT, end="")
                 p1_input = input().split()
-            self.move(p1_input[1],int(p1_input[0]), self.player1)
+                if self.resign(p1_input):
+                    return
+                
+            self.move(p1_input[0], p1_input[1], self.player1)
             grid.print_board()
             if self.game_over():
-                if self.get_winner() == self.player1:
-                    print(p1_wins)
-                else:
-                    print(p2_wins)
-                print("Game over.")
-                return
+                break
             self.change_turn()
 
-            print("Player 2 - Enter your move [1-2] [WASD]: ", end="")
+            # Player 2 Turn
+            print(PLAYER2_PROMPT, end="")
             p2_input = input().split()
-            while not self.is_valid_input(p2_input) or not self.is_valid_move(p2_input[1],int(p2_input[0]),self.player2):
-                print("Player 2 - Enter your move [1-2] [WASD]: ", end="")
+            if self.resign(p2_input):
+                return
+            while not self.is_valid_input(p2_input) or not self.is_valid_move(p2_input[0], p2_input[1], self.player2):
+                print(PLAYER2_PROMPT, end="")
                 p2_input = input().split()
-            self.move(p2_input[1],int(p2_input[0]), self.player2)
+                if self.resign(p2_input):
+                    return
+                
+            self.move(p2_input[0], p2_input[1], self.player2)
             grid.print_board()
             if self.game_over():
-                if self.get_winner() == self.player1:
-                    print(p1_wins)
-                else:
-                    print(p2_wins)
-                print("Game over.")
-                return
+                break
             self.change_turn()
+
+        if self.get_winner() == self.player1:
+                print(PLAYER1_WINS)
+        else:
+            print(PLAYER2_WINS)
+        print(GAME_OVER)
+        return
 
