@@ -46,6 +46,7 @@ class Player:
 
     def update_position(self, direction):
         current_position = self.get_position()
+        direction = direction.upper()
         if direction == 'W':
             current_position[0] -= 1
         elif direction == 'A':

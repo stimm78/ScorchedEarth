@@ -80,6 +80,7 @@ class ScorchedEarth():
     def is_valid_move(self, num_moves, direction, current_player): # checks for valid input, then check incrementally for valid move
         current_position = current_player.get_position()
         pos = current_position
+        direction = direction.upper()
         for i in range(1,int(num_moves)+1):
             if direction == 'W':
                 pos = [current_position[0] - i, current_position[1]]
@@ -103,7 +104,7 @@ class ScorchedEarth():
         if not input_list[0].isdigit():
             print(INVALID_INPUT)
             return False
-        if int(input_list[0]) not in [1,2] or input_list[1] not in ['W', 'A', 'S', 'D']:
+        if int(input_list[0]) not in [1,2] or input_list[1].upper() not in ['W', 'A', 'S', 'D']:
             print(INVALID_INPUT)
             return False
         return True
@@ -157,12 +158,12 @@ class ScorchedEarth():
 
     def resign(self, input): # Checks for resign input, prints corresponding messages
         if self.turn:
-            if input == ['R']:
+            if input == ['R'] or input == ['r']:
                 self.set_winner(self.player2)
                 print(PLAYER2_WINS)
                 return True
         else:
-            if input == ['R']:
+            if input == ['R'] or input == ['r']:
                 self.set_winner(self.player1)
                 print(PLAYER1_WINS)
                 return True
