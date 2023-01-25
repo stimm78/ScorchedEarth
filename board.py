@@ -20,7 +20,7 @@ class Board:
     get_element(coordinates:list) -> string
         Returns element at coordinate
     """
-    BOARD_SIZE = 10
+    BOARD_SIZE = 11
 
     def __init__(self):
         self.board = [['-' for i in range(Board.BOARD_SIZE)] for j in range(Board.BOARD_SIZE)]
