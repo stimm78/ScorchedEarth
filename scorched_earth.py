@@ -81,20 +81,19 @@ class ScorchedEarth():
         current_position = current_player.get_position()
         pos = current_position
         direction = direction.upper()
-        for i in range(1,int(num_moves)+1):
-            if direction == 'W':
-                pos = [current_position[0] - i, current_position[1]]
-            elif direction == 'A':
-                pos = [current_position[0], current_position[1] - i]
-            elif direction == 'S':
-                pos = [current_position[0] + i, current_position[1]]
-            elif direction == 'D':
-                pos = [current_position[0], current_position[1] + i]
-            if self.board.get_element(pos) == 'A' or self.board.get_element(pos) == 'B':
-                return True
-            elif self.board.get_element(pos) == '!':
-                print(INVALID_MOVE)
-                return False
+        if direction == 'W':
+            pos = [current_position[0] - int(num_moves), current_position[1]]
+        elif direction == 'A':
+            pos = [current_position[0], current_position[1] - int(num_moves)]
+        elif direction == 'S':
+            pos = [current_position[0] + int(num_moves), current_position[1]]
+        elif direction == 'D':
+            pos = [current_position[0], current_position[1] + int(num_moves)]
+        if self.board.get_element(pos) == 'A' or self.board.get_element(pos) == 'B':
+            return True
+        elif self.board.get_element(pos) == '!':
+            print(INVALID_MOVE)
+            return False
         return True
 
     def is_valid_input(self, input_list):
@@ -128,16 +127,29 @@ class ScorchedEarth():
         p1_position_2 = [player1_position[0], player1_position[1] - 1]
         p1_position_3 = [player1_position[0] + 1, player1_position[1]]
         p1_position_4 = [player1_position[0], player1_position[1] + 1]
+        p1_position_5 = [player1_position[0] - 2, player1_position[1]]
+        p1_position_6 = [player1_position[0], player1_position[1] - 2]
+        p1_position_7 = [player1_position[0] + 2, player1_position[1]]
+        p1_position_8 = [player1_position[0], player1_position[1] + 2]
+        if (self.board.get_element(p1_position_1) == '!' and self.board.get_element(p1_position_2) == '!' and self.board.get_element(p1_position_3) == '!' and self.board.get_element(p1_position_4) == '!' 
+            and self.board.get_element(p1_position_5) == '!' and self.board.get_element(p1_position_6) == '!' and self.board.get_element(p1_position_7) == '!' and self.board.get_element(p1_position_8) == '!'):
+            self.set_winner(self.player2)
+            return True
+
         p2_position_1 = [player2_position[0] - 1, player2_position[1]]
         p2_position_2 = [player2_position[0], player2_position[1] - 1]
         p2_position_3 = [player2_position[0] + 1, player2_position[1]]
         p2_position_4 = [player2_position[0], player2_position[1] + 1]
-        if self.board.get_element(p1_position_1) == '!' and self.board.get_element(p1_position_2) == '!' and self.board.get_element(p1_position_3) == '!' and self.board.get_element(p1_position_4) == '!':
-            self.set_winner(self.player2)
-            return True
-        if self.board.get_element(p2_position_1) == '!' and self.board.get_element(p2_position_2) == '!' and self.board.get_element(p2_position_3) == '!' and self.board.get_element(p2_position_4) == '!':
+        p2_position_5 = [player2_position[0] - 2, player2_position[1]]
+        p2_position_6 = [player2_position[0], player2_position[1] - 2]
+        p2_position_7 = [player2_position[0] + 2, player2_position[1]]
+        p2_position_8 = [player2_position[0], player2_position[1] + 2]
+
+        if (self.board.get_element(p2_position_1) == '!' and self.board.get_element(p2_position_2) == '!' and self.board.get_element(p2_position_3) == '!' and self.board.get_element(p2_position_4) == '!' 
+            and self.board.get_element(p2_position_5) == '!' and self.board.get_element(p2_position_6) == '!' and self.board.get_element(p2_position_7) == '!' and self.board.get_element(p2_position_8) == '!'):
             self.set_winner(self.player1)
             return True
+
         return False
 
     def captured(self): # Check for win by capture and set winners
