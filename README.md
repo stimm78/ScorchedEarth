@@ -24,6 +24,9 @@ Command input format: [number] [string]
 
 [number] is 1 or 2, [string] is WASD
 
-* [number] denotes number of moves
+* [number] denotes number of moves*
 * [string] denotes direction
+
+*Note: If you move 2 units, you can jump over scorched tiles.
+
 
