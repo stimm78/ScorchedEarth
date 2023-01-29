@@ -127,12 +127,7 @@ class ScorchedEarth():
         p1_position_2 = [player1_position[0], player1_position[1] - 1]
         p1_position_3 = [player1_position[0] + 1, player1_position[1]]
         p1_position_4 = [player1_position[0], player1_position[1] + 1]
-        p1_position_5 = [player1_position[0] - 2, player1_position[1]]
-        p1_position_6 = [player1_position[0], player1_position[1] - 2]
-        p1_position_7 = [player1_position[0] + 2, player1_position[1]]
-        p1_position_8 = [player1_position[0], player1_position[1] + 2]
-        if (self.board.get_element(p1_position_1) == '!' and self.board.get_element(p1_position_2) == '!' and self.board.get_element(p1_position_3) == '!' and self.board.get_element(p1_position_4) == '!' 
-            and self.board.get_element(p1_position_5) == '!' and self.board.get_element(p1_position_6) == '!' and self.board.get_element(p1_position_7) == '!' and self.board.get_element(p1_position_8) == '!'):
+        if (self.board.get_element(p1_position_1) == '!' and self.board.get_element(p1_position_2) == '!' and self.board.get_element(p1_position_3) == '!' and self.board.get_element(p1_position_4) == '!'):
             self.set_winner(self.player2)
             return True
 
@@ -140,13 +135,7 @@ class ScorchedEarth():
         p2_position_2 = [player2_position[0], player2_position[1] - 1]
         p2_position_3 = [player2_position[0] + 1, player2_position[1]]
         p2_position_4 = [player2_position[0], player2_position[1] + 1]
-        p2_position_5 = [player2_position[0] - 2, player2_position[1]]
-        p2_position_6 = [player2_position[0], player2_position[1] - 2]
-        p2_position_7 = [player2_position[0] + 2, player2_position[1]]
-        p2_position_8 = [player2_position[0], player2_position[1] + 2]
-
-        if (self.board.get_element(p2_position_1) == '!' and self.board.get_element(p2_position_2) == '!' and self.board.get_element(p2_position_3) == '!' and self.board.get_element(p2_position_4) == '!' 
-            and self.board.get_element(p2_position_5) == '!' and self.board.get_element(p2_position_6) == '!' and self.board.get_element(p2_position_7) == '!' and self.board.get_element(p2_position_8) == '!'):
+        if (self.board.get_element(p2_position_1) == '!' and self.board.get_element(p2_position_2) == '!' and self.board.get_element(p2_position_3) == '!' and self.board.get_element(p2_position_4) == '!'):
             self.set_winner(self.player1)
             return True
 
