@@ -1,6 +1,6 @@
 # Scorched Earth
 
-An original turn-based strategy game built in Python. **Work has shifted to https://github.com/zorbulator/scorched-earth**
+An original turn-based strategy game built in Python. **Work has shifted to https://github.com/zorbulator/scorched-earth **
 
 ## Rules
 
